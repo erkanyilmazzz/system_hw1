@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 #include"arg.h"
+#include"file_lib.h"
 
 
 int main(int argc,char ** argv){
@@ -24,7 +25,7 @@ int main(int argc,char ** argv){
     }
 
 
-
+    foo();
     printf("s1:%s s2:%s time :%d\n",inputPathA,outputPathA,time);
     
     
