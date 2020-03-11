@@ -17,8 +17,12 @@ void print_complex_num(struct complex_number);
 */
 int  string_to_comlpex_number_arr(char * str,struct complex_number ** arr);
 
-
-
 void unit_test_string_to_complex_number();
+
+
+char * getString(struct complex_number,char *sum);
+
+
+void unit_test_getString();
 
 #endif

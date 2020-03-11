@@ -35,8 +35,20 @@ int  string_to_comlpex_number_arr(char * str,struct complex_number ** arr){
     
     return size_of_complex_number_arr;
 }
+char * getString(struct complex_number num,char * snum){
+    //char * snum=malloc(sizeof(char)*10);
+    
+    sprintf(snum, "%di+%d", num.imaginary,num.real);
+      
+}
 
-
+void unit_test_getString(){
+    struct complex_number num;
+    char * snum;
+    num.imaginary=5;
+    num.real=6;
+   // printf("%s",getString(num));
+}
 void unit_test_string_to_complex_number(){
     char * str="a1b2c3d4e5f6g7x812345678";
     struct complex_number * arr;
@@ -46,3 +58,4 @@ void unit_test_string_to_complex_number(){
     }
     
 }
+
