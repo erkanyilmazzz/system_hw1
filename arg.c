@@ -22,10 +22,7 @@ int argHandler(int __argc,char ** __argv,char ** _inputPath, char ** _outputPath
             where_is_o=i;
         if(0==strcmp(__argv[i],"-t"))
             where_is_t=i;        
-    }
-    //printf("%d %d %d",where_is_i,where_is_o,where_is_t);
-    //printf("s1:%s s2:%s cmpdeneme: %d\n",__argv[1],"-i",strcmp(__argv[1],"-i"));
-    
+    }    
     if(where_is_i<0|where_is_o<0|where_is_t<0
         |where_is_t>__argc-1|where_is_o>__argc-1|where_is_i>__argc-1
         |abs(where_is_i-where_is_o)<=1|abs(where_is_i-where_is_t)<=1|abs(where_is_o-where_is_t)<=1){
