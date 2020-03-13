@@ -58,7 +58,12 @@ int main(int argc,char ** argv){
     
 int read_byte=BUF;
 struct complex_number * arr;    
+struct flock _lock;
+memset (&_lock, 0, sizeof(_lock));;
+ 
+
 file1.is_lock=0;
+
 
 lseek(file2.fd,0,SEEK_SET);
 do{
@@ -91,13 +96,17 @@ do{
             }
                   printf("->%s",writeable_text);
                   
+                  memset (&_lock, 0, sizeof(_lock));                                      //locking file
+                  lock(file2.fd,&_lock);
+            
                   int pos=get_first_avalible_pos(file2.fd);
                   write_in_a_post(file2.fd,writeable_text,strlen(writeable_text),pos-1);
                   
+                  unlock(file2.fd,&_lock);
                   //printf("curser pos:::::%d pos:::%d",lseek(file2.fd,0,SEEK_CUR),pos);
-            printf("\n");
-            free(writeable_text);
-            //sleep(time);
+                  printf("\n");
+                  free(writeable_text);
+                  sleep(time);
             //unlock
       }else{
             //wait
