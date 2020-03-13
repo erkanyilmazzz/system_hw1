@@ -11,8 +11,8 @@ struct file_lib
     int is_lock;
 };
 
-int lock(struct flock* _lock,int pid);
-int unlock(struct flock * _lock, int pid);
+int lock(int fd,struct flock* _lock);
+int unlock(int fd,struct flock * _lock);
 
 /**has to be in readonly mode*/
 int get_first_avalible_pos(int fd);

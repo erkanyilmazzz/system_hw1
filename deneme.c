@@ -15,10 +15,10 @@
 int main(){
 
       //unit_test_get_first_avalible_pos();
-      //unit_test_write_in_a_post();
+      unit_test_write_in_a_post();
  
-
- 
+}
+ /*
       //unit_test_write_in_a_post();
       struct file_lib file1;
       struct file_lib file2;
@@ -93,3 +93,4 @@ close(file2.fd);
 
 return 0;
 }
+*/
