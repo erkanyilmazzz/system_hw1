@@ -38,7 +38,7 @@ int  string_to_comlpex_number_arr(char * str,struct complex_number ** arr){
 char * getString(struct complex_number num,char * snum){
     //char * snum=malloc(sizeof(char)*10);
     
-    sprintf(snum, "%di+%d", num.imaginary,num.real);
+    sprintf(snum, "%d+i%d", num.imaginary,num.real);
       
 }
 

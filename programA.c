@@ -12,7 +12,7 @@
 
 
 
-#define BUF 16
+#define BUF 32
 
 int main(int argc,char ** argv){
  
@@ -64,7 +64,7 @@ memset (&_lock, 0, sizeof(_lock));;
 
 file1.is_lock=0;
 
-
+int i=0;
 lseek(file2.fd,0,SEEK_SET);
 do{
       if(!file1.is_lock){
@@ -82,7 +82,7 @@ do{
                   perror("worning !!!\n");
             }
 
-            char * writeable_text=malloc(sizeof(char)*100);
+            char * writeable_text=malloc(sizeof(char)*500);
             char * temp;
             for (size_t i = 0; i < BUF/2; i++){
                   char temp[10];
@@ -94,8 +94,8 @@ do{
                         //strcat(writeable_text,"\n");
                   }                 
             }
-                  printf("->%s",writeable_text);
-                  
+                  //printf("->%s",writeable_text);
+                  printf("%d ",i);
                   memset (&_lock, 0, sizeof(_lock));                                      //locking file
                   lock(file2.fd,&_lock);
             
@@ -111,7 +111,7 @@ do{
       }else{
             //wait
       }
-
+++i;
 }while(read_byte==BUF);
     
 close(file1.fd);
