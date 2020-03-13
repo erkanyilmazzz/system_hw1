@@ -15,10 +15,9 @@
 int main(){
 
       //unit_test_get_first_avalible_pos();
-      unit_test_write_in_a_post();
+      //unit_test_write_in_a_post();
  
-}
- /*
+
       //unit_test_write_in_a_post();
       struct file_lib file1;
       struct file_lib file2;
@@ -76,12 +75,13 @@ do{
                   printf("->%s",writeable_text);
                   
                   int pos=get_first_avalible_pos(file2.fd);
-                  write_in_a_post(file2.fd,writeable_text,strlen(writeable_text),pos);
+                  write_in_a_post(file2.fd,writeable_text,strlen(writeable_text),pos-1);
                   
                   printf("curser pos:::::%d pos:::%d",lseek(file2.fd,0,SEEK_CUR),pos);
             printf("\n");
             free(writeable_text);
             //unlock
+      
       }else{
             //wait
       }
@@ -93,4 +93,3 @@ close(file2.fd);
 
 return 0;
 }
-*/
