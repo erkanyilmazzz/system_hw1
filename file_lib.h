@@ -41,9 +41,9 @@ void unit_test_sizeof_line();
 
 
 
-int deletenchar(int fd,int pos,int size);
+char * deletenchar(int fd,int pos,int size);
 void unit_test_deletenchar();
 
 
-
+char * clearString(char * string,int size);
 #endif

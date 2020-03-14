@@ -320,9 +320,19 @@ void unit_test_sizeof_line(){
 }
 
 
-int deletenchar(int fd,int pos,int size){
-    lseek(fd,pos+1,SEEK_SET);
+char * deletenchar(int fd,int pos,int size){
+    lseek(fd,pos+1,SEEK_SET);    
     char * temp=malloc(sizeof(char)*size);
+    char * string =malloc(sizeof(char)*size);
+    char * reading_temp=malloc(sizeof(char));
+    int i=0;
+    do{
+        read(fd,reading_temp,1);
+        string[i]=*reading_temp;
+        ++i;
+    }while(i<size);
+    
+    lseek(fd,pos+1,SEEK_SET);
     for (size_t i = 0; i < size-1; i++)
     {
         temp[i]=' ';
@@ -332,7 +342,7 @@ int deletenchar(int fd,int pos,int size){
 
     
 
-
+    return string;
 }
 
 void unit_test_deletenchar(){
@@ -344,8 +354,10 @@ void unit_test_deletenchar(){
     int start =get_random_line_start(fd);
     int size=sizeof_line(fd,start);
     printf("start :::%d  size::::%d\n ",start,size);
-    deletenchar(fd,start,size);
-    
+    char * temp;
+    temp=deletenchar(fd,start,size);
+    char * stirng=clearString(temp,size);
+    printf("string is::::%s\n",stirng);
 
     close(fd);
 }
@@ -354,3 +366,10 @@ int is_char(char c){
     if(!(c==' ' | c=='\n'|c=='\0'))return 1;
     else return 0;
 }
+
+char * clearString(char * string,int size){
+    char *temp=malloc(sizeof(char)*size);
+    
+    free(string);
+    return temp;
+}   
