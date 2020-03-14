@@ -368,8 +368,17 @@ int is_char(char c){
 }
 
 char * clearString(char * string,int size){
-    char *temp=malloc(sizeof(char)*size);
+    char *temp=malloc(sizeof(char));
+    char *temp2=malloc(sizeof(char));
+    for (size_t i = 0; i < size; i++)
+    {
+        if(is_char(string[i]))
+        *temp2=string[i];
+        strcat(temp,temp2);
+   
+    }
     
+
     free(string);
     return temp;
 }   
