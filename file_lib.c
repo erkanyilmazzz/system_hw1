@@ -261,6 +261,7 @@ int sizeof_line(int fd,int starting_pos){
            return counter;
         }
          counter ++;
+        
 
         strcpy(temp2,temp);    
     }while(read_byte!=0);
@@ -287,16 +288,18 @@ void unit_test_sizeof_line(){
 
 
 int deletenchar(int fd,int pos,int size){
-    lseek(fd,pos,SEEK_SET);
-    char * temp=malloc(sizeof(char)*size*2);
-    //printf("\ntemp::::::::::::::::::::::::%s\n",temp);
-    for (size_t i = 0; i < size; i++){
+    lseek(fd,pos+1,SEEK_SET);
+    char * temp=malloc(sizeof(char)*size);
+    for (size_t i = 0; i < size-1; i++)
+    {
         temp[i]=' ';
     }
-    strcat(temp,"\n");
-    //printf("temp::::::::::::::::::::::::%s\n",temp);
+    temp[size-1]='\n';
     write(fd,temp,size);
-    free(temp);
+
+    
+
+
 }
 
 void unit_test_deletenchar(){
