@@ -6,6 +6,7 @@
 #include<unistd.h>
 #include<stdlib.h>
 #include<time.h>
+#include"complex_number.h"
 
 
 int lock(int fd,struct flock * _lock){
@@ -358,7 +359,10 @@ void unit_test_deletenchar(){
     temp=deletenchar(fd,start,size);
     char * stirng=clearString(temp,size);
     printf("string is::::%s\n",stirng);
-
+    struct complex_number *arr=get_complex_number_arr(stirng,size);
+   
+   
+    
     close(fd);
 }
 
@@ -374,11 +378,42 @@ char * clearString(char * string,int size){
     {
         if(is_char(string[i]))
         *temp2=string[i];
-        strcat(temp,temp2);
-   
+        strcat(temp,temp2);   
     }
     
 
     free(string);
     return temp;
 }   
+
+
+struct complex_number * get_complex_number_arr(char *str,int size){
+    struct complex_number* arr=malloc(sizeof(struct complex_number)*16);
+    char  tokens[4];
+    tokens[0]=' ';
+    tokens[1]='+';
+    tokens[2]=',';
+    tokens[3]='i';
+    
+    char *token;
+        token=strtok(str,tokens);
+        arr[0].real=atoi(token);
+        token=strtok(NULL,tokens);
+        arr[0].imaginary=atoi(token);
+        printf("%d + i%d \n",arr[0].real,arr[0].imaginary);
+
+        int i=1;
+        while( i<16 ) {
+            //printf( " %s\n", token );
+            token = strtok(NULL, tokens);
+            arr[i].real=atoi(token);
+            token = strtok(NULL, tokens);
+            arr[i].imaginary=atoi(token);
+//            printf("%d + i%d \n",arr[i].real,arr[i].imaginary);
+            ++i;
+        }
+
+    
+    
+    return  arr;
+}
