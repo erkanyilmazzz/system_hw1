@@ -23,4 +23,17 @@ int write_in_a_post(int fd,void * buf,int size,int pos);
 void unit_test_write_in_a_post();
 int foo();
 
+
+
+int get_how_many_new_line(int fd);
+void unit_test_get_how_many_new_line();
+
+/*file has to end with newline */
+int get_random_line_start(int fd);
+
+void unit_test_get_random_line_start();
+
+
+int sizeof_line(int fd,int starting_pos);
+void unit_test_sizeof_line();
 #endif

@@ -5,7 +5,7 @@
 #include<sys/types.h>
 #include<unistd.h>
 #include<stdlib.h>
-
+#include<time.h>
 
 
 int lock(int fd,struct flock * _lock){
@@ -116,3 +116,165 @@ void unit_test_write_in_a_post(){
     write_in_a_post(fd,str,strlen(str),at-1);
     close(fd);
 }
+
+
+int get_how_many_new_line(int fd){
+    lseek(fd,0,SEEK_SET);
+
+    int read_byte=1;
+    int counter=0;
+    char *temp=malloc(sizeof(char));    
+    do{
+        read_byte=read(fd,temp,1); 
+        if(read_byte<0)perror("asd");
+        
+        if(*temp=='\n'){
+            counter++;
+        }
+    
+    }while(read_byte!=0);
+
+    free(temp);
+return counter;
+}
+
+void unit_test_get_how_many_new_line (){
+    int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
+    if(fd<0){
+        perror("hata");
+        exit(-1);
+    }
+    printf("here are %d line \n",get_how_many_new_line(fd));
+
+    close(fd);
+}
+
+
+
+
+int get_random_line_start(int fd){/*sıkıntı var*/
+    
+    /*I get start of file en d end of dile */
+    int end_of_file=lseek(fd,0,SEEK_END);                       
+    int start=lseek(fd,0,SEEK_SET);
+    
+    /**check lseek works or not*/
+    if(end_of_file<0|start<0){
+        perror("asd");
+        exit(-1);
+    }
+
+    /**calculate lengt of file */
+    int leng_of_file=(end_of_file-start);
+    if(leng_of_file==0)return 0;                                /*if file is empty return 0*/
+    
+    srand(time(NULL));
+    /*get random cursur pos */
+    int random= rand()%leng_of_file;
+
+    /*set random cursor pos*/
+    if(0>lseek(fd,random,SEEK_SET)){
+        perror("lseek error");
+        exit(-1);
+    }
+    printf("random :%d ye set edildi\n",random);
+    int pos=0;
+    int read_byte=1;
+    char *temp=malloc(sizeof(char));    
+    int i=0;
+    int flag=0;
+    char * debug=malloc(sizeof(char )*300);
+    do{
+        /*get char in temp*/
+        read_byte=read(fd,temp,1); 
+        if(read_byte<0){
+            perror("reading error!");
+            exit(-1);
+        }
+        
+
+
+
+
+        if(*temp=='\n'){
+            pos=i+random;
+            
+            flag=1;
+        }
+        if(i==leng_of_file-random){
+            /**set cursor start of file */       
+            if(0>lseek(fd,0,SEEK_SET)){
+                perror("lseek error");
+                exit(-1);
+            }
+            i=0;
+        }
+    ++i;
+   // printf("temp::::::::::::::::%c\n",*temp);
+    if(flag==0){
+        strcat(debug,temp);
+    }
+    if(flag==1)break;
+    }while(read_byte!=0);
+
+    free(temp);
+
+    printf("%s\n",debug);
+    return pos;
+}
+
+
+
+void unit_test_get_random_line_start(){
+    int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
+    if(fd<0){
+        perror("hata");
+        exit(-1);
+    }
+    int size=0;
+    int pos=get_random_line_start(fd);
+    printf("random line start at %d ",pos);
+
+    close(fd);
+
+}
+
+int sizeof_line(int fd,int starting_pos){
+    if(0>lseek(fd,starting_pos+1,SEEK_SET)){
+        perror("asd");
+        exit(-1);
+    }
+    int read_byte=1;
+    char *temp=malloc(sizeof(char));
+    int counter=0;
+    do{
+        read_byte=read(fd,temp,1);
+        if(read_byte<0){
+            perror("reading error\n");
+            exit(-1);
+        }
+        if(*temp=='\n'){
+            free(temp);
+           return counter;
+        }
+         counter ++;
+            
+    }while(read_byte!=0);
+}
+
+void unit_test_sizeof_line(){
+    int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
+    if(fd<0){
+        perror("hata");
+        exit(-1);
+    }
+    int start =get_random_line_start(fd);
+    int size=sizeof_line(fd,start);
+    printf("start :::%d  size::::%d\n ",start,size);
+
+    close(fd);
+}
+
+
+
+

@@ -13,12 +13,17 @@
 
 
 int main(){
-
+      
       //unit_test_get_first_avalible_pos();
       //unit_test_write_in_a_post();
  
 
       //unit_test_write_in_a_post();
+      //unit_test_get_how_many_new_line();    
+      //unit_test_get_random_line_start();
+      unit_test_sizeof_line();
+}
+/*      
       struct file_lib file1;
       struct file_lib file2;
       char str[BUF];
@@ -93,3 +98,4 @@ close(file2.fd);
 
 return 0;
 }
+*/
