@@ -21,7 +21,8 @@ int main(){
       //unit_test_write_in_a_post();
       //unit_test_get_how_many_new_line();    
       //unit_test_get_random_line_start();
-      unit_test_sizeof_line();
+      //unit_test_sizeof_line();
+      unit_test_deletenchar();
 }
 /*      
       struct file_lib file1;

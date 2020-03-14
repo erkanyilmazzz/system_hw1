@@ -246,6 +246,7 @@ int sizeof_line(int fd,int starting_pos){
     }
     int read_byte=1;
     char *temp=malloc(sizeof(char));
+    char *temp2=malloc(sizeof(char));
     int counter=0;
     do{
         read_byte=read(fd,temp,1);
@@ -253,13 +254,22 @@ int sizeof_line(int fd,int starting_pos){
             perror("reading error\n");
             exit(-1);
         }
-        if(*temp=='\n'){
+        if(*temp2=='\n'&& *temp!=' '&&*temp!='\n'){
+            
             free(temp);
+            free(temp2);
            return counter;
         }
          counter ++;
-            
+
+        strcpy(temp2,temp);    
     }while(read_byte!=0);
+        
+    if(0>lseek(fd,0,SEEK_SET)){
+        perror("asd");
+        exit(-1);
+    }
+
 }
 
 void unit_test_sizeof_line(){
@@ -276,5 +286,32 @@ void unit_test_sizeof_line(){
 }
 
 
+int deletenchar(int fd,int pos,int size){
+    lseek(fd,pos,SEEK_SET);
+    char * temp=malloc(sizeof(char)*size*2);
+    //printf("\ntemp::::::::::::::::::::::::%s\n",temp);
+    for (size_t i = 0; i < size; i++){
+        temp[i]=' ';
+    }
+    strcat(temp,"\n");
+    //printf("temp::::::::::::::::::::::::%s\n",temp);
+    write(fd,temp,size);
+    free(temp);
+}
+
+void unit_test_deletenchar(){
+    int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
+    if(fd<0){
+        perror("hata");
+        exit(-1);
+    }
+    int start =get_random_line_start(fd);
+    int size=sizeof_line(fd,start);
+    printf("start :::%d  size::::%d\n ",start,size);
+    deletenchar(fd,start,size);
+    
+
+    close(fd);
+}
 
 

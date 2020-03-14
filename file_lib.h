@@ -36,4 +36,14 @@ void unit_test_get_random_line_start();
 
 int sizeof_line(int fd,int starting_pos);
 void unit_test_sizeof_line();
+
+
+
+
+
+int deletenchar(int fd,int pos,int size);
+void unit_test_deletenchar();
+
+
+
 #endif
