@@ -240,6 +240,9 @@ void unit_test_get_random_line_start(){
 }
 
 int sizeof_line(int fd,int starting_pos){
+    int endoffile=lseek(fd,0,SEEK_END);
+    int start=lseek(fd,0,SEEK_SET);
+    int leng_of_file=endoffile-start;
     if(0>lseek(fd,starting_pos+1,SEEK_SET)){
         perror("asd");
         exit(-1);
@@ -248,23 +251,53 @@ int sizeof_line(int fd,int starting_pos){
     char *temp=malloc(sizeof(char));
     char *temp2=malloc(sizeof(char));
     int counter=0;
+    int i=0;
+
     do{
         read_byte=read(fd,temp,1);
         if(read_byte<0){
             perror("reading error\n");
             exit(-1);
         }
-        if(*temp2=='\n'&& *temp!=' '&&*temp!='\n'){
-            
+        if(1==is_char(*temp2) && *temp=='\n'){
+            //printf("girdi");
             free(temp);
             free(temp2);
            return counter;
         }
          counter ++;
+         ++i;
+         printf("%d ",counter);
+         printf("önceki ---%c--- sonraki ---%c---\n",*temp2,*temp);
         
 
         strcpy(temp2,temp);    
-    }while(read_byte!=0);
+
+        if(i==leng_of_file){/*if file end */
+            printf("girdiaaaaaaaaaaaaaaaaaaaa");
+            
+            /*set cursor start of file */     
+            if(0>lseek(fd,0,SEEK_SET)){
+                perror("asd");
+                exit(-1);
+            }
+            int read_byte;
+            int size=0;
+            do{
+                read_byte=read(fd,temp,1);
+                size++;
+                if(1==is_char(*temp2) && *temp=='\n'){
+                   break;
+                }
+
+                *temp2=*temp;
+            }while(1);
+            deletenchar(fd,-1,size);
+            free(temp);
+            free(temp2);
+            return size;
+        }
+    }while(i<leng_of_file);
         
     if(0>lseek(fd,0,SEEK_SET)){
         perror("asd");
@@ -317,4 +350,7 @@ void unit_test_deletenchar(){
     close(fd);
 }
 
-
+int is_char(char c){
+    if(!(c==' ' | c=='\n'|c=='\0'))return 1;
+    else return 0;
+}

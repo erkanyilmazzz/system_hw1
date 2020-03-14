@@ -23,7 +23,7 @@ int write_in_a_post(int fd,void * buf,int size,int pos);
 void unit_test_write_in_a_post();
 int foo();
 
-
+int is_char(char c);
 
 int get_how_many_new_line(int fd);
 void unit_test_get_how_many_new_line();
