@@ -13,16 +13,21 @@
 
 
 int main(){
+      int i=0;
+      while(i<1){
+            //unit_test_get_first_avalible_pos();
       
-      //unit_test_get_first_avalible_pos();
+      
       //unit_test_write_in_a_post();
  
 
-      //unit_test_write_in_a_post();
-      //unit_test_get_how_many_new_line();    
       //unit_test_get_random_line_start();
       //unit_test_sizeof_line();
       unit_test_deletenchar();
+      //unit_test_clear_string();
+      ++i;
+      }
+
 }
 /*      
       struct file_lib file1;

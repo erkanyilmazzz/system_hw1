@@ -33,7 +33,6 @@ int get_random_line_start(int fd);
 
 void unit_test_get_random_line_start();
 
-
 int sizeof_line(int fd,int starting_pos);
 void unit_test_sizeof_line();
 
@@ -46,9 +45,10 @@ void unit_test_deletenchar();
 
 
 char * clearString(char * string,int size);
-
+void unit_test_clear_string();
 
 struct complex_number * get_complex_number_arr(char *str,int size);
 
-
+int file_is_empty(int fd);
+void unit_test_file_is_empty();
 #endif

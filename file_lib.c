@@ -181,10 +181,14 @@ int get_random_line_start(int fd){
     //printf("random :%d ye set edildi\n",random);
     int pos=0;
     int read_byte=1;
-    char *temp=malloc(sizeof(char));    
+    
+    char *temp=malloc(sizeof(char));
+    if(temp==NULL){
+        perror("malloc");
+        exit(-1);
+    }
     int i=0;
     int flag=0;
-    char * debug=malloc(sizeof(char )*300);
     do{
         /*get char in temp*/
         read_byte=read(fd,temp,1); 
@@ -193,10 +197,6 @@ int get_random_line_start(int fd){
             exit(-1);
         }
         
-
-
-
-
         if(*temp=='\n'){
             pos=i+random;
             
@@ -212,10 +212,9 @@ int get_random_line_start(int fd){
         }
     ++i;
    // printf("temp::::::::::::::::%c\n",*temp);
-    if(flag==0){
-        strcat(debug,temp);
-    }
     if(flag==1)break;
+    
+    
     }while(read_byte!=0);
 
     free(temp);
@@ -245,10 +244,13 @@ int sizeof_line(int fd,int starting_pos){
     int endoffile=lseek(fd,0,SEEK_END);
     int start=lseek(fd,0,SEEK_SET);
     int leng_of_file=endoffile-start;
+
     if(0>lseek(fd,starting_pos+1,SEEK_SET)){
         perror("asd");
         exit(-1);
     }
+
+    
     int read_byte=1;
     char *temp=malloc(sizeof(char));
     char *temp2=malloc(sizeof(char));
@@ -262,17 +264,12 @@ int sizeof_line(int fd,int starting_pos){
             exit(-1);
         }
         if(1==is_char(*temp2) && *temp=='\n'){
-            //printf("girdi");
             free(temp);
             free(temp2);
            return counter;
         }
          counter ++;
          ++i;
-     //    printf("%d ",counter);
-     //    printf("önceki ---%c--- sonraki ---%c---\n",*temp2,*temp);
-        
-
         strcpy(temp2,temp);    
         
         if(i==leng_of_file){/*if file end */
@@ -280,6 +277,7 @@ int sizeof_line(int fd,int starting_pos){
             char * line;    
             char * clear_line;
             struct complex_number *arr;
+            
             /*set cursor start of file */     
             if(0>lseek(fd,0,SEEK_SET)){
                 perror("asd");
@@ -296,13 +294,21 @@ int sizeof_line(int fd,int starting_pos){
 
                 *temp2=*temp;
             }while(1);
+            //printf("silicem\n");
             line=deletenchar(fd,-1,size);
-            clear_line=clearString(line ,size);//size a bak
-            int result=fft(arr,16);
+            //printf("sildim\n");
+            //clear_line=clearString(line ,size);//size a bak
+
+            arr=get_complex_number_arr(line,size);
+            
+            int result=fft(arr,16);/////////////////////////////////////burda patlıyor
+            printf("%d ",result);
             //write result
-            printf("%s",line);
-            free(temp);
-            free(temp2);
+            //printf("%s",line);
+            //free(temp);
+            //free(temp2);
+            lseek(fd,0,SEEK_SET);
+            //printf("I am returning -1");
             return -1;
         }
     }while(i<leng_of_file);
@@ -348,8 +354,14 @@ char * deletenchar(int fd,int pos,int size){
     temp[size-1]='\n';
     write(fd,temp,size);
 
+    free(temp);
+    free(reading_temp);
+    lseek(fd,0,SEEK_SET);
     return string;
 }
+/*
+
+*/
 
 void unit_test_deletenchar(){
     int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
@@ -360,14 +372,20 @@ void unit_test_deletenchar(){
 
     int start =get_random_line_start(fd);
     int size=sizeof_line(fd,start);
-    //printf("start :::%d  size::::%d\n ",start,size);
-    char * temp;
-    temp=deletenchar(fd,start,size);
-    char * stirng=clearString(temp,size);
-    //printf("string is::::%s\n",stirng);
-    struct complex_number *arr=get_complex_number_arr(stirng,size);
-    printf("%d ",fft(arr,16));
+    if(size!=-1){
+//        printf("start :::%d  size::::%d\n ",start,size);
+        char * temp;
+        temp=deletenchar(fd,start,size);
+
+        //char * stirng=clearString(temp,size);//bir iey değiştirdim
    
+        //printf("string is::::%s\n",stirng);
+        struct complex_number *arr=get_complex_number_arr(temp,size);
+        printf("%d ",fft(arr,16));
+ 
+    }else{
+        printf("-1 return etti");
+    }
     
     close(fd);
 }
@@ -378,6 +396,7 @@ int is_char(char c){
 }
 
 char * clearString(char * string,int size){
+    printf("clear stringe girdi\n");
     char *temp=malloc(sizeof(char));
     char *temp2=malloc(sizeof(char));
     for (size_t i = 0; i < size; i++)
@@ -388,10 +407,9 @@ char * clearString(char * string,int size){
     }
     
 
-    free(string);
+    //free(string);
     return temp;
 }   
-
 
 struct complex_number * get_complex_number_arr(char *str,int size){
     struct complex_number* arr=malloc(sizeof(struct complex_number)*16);
@@ -426,3 +444,49 @@ struct complex_number * get_complex_number_arr(char *str,int size){
 
 
 
+
+int file_is_empty(int fd){
+    int end_pos=lseek(fd,0,SEEK_END);
+    int start_pos=lseek(fd,0,SEEK_SET);
+    if(end_pos<0|start_pos<0){
+        perror("lseek error");
+        exit(-1);
+    }
+    
+    char *  temp=malloc(sizeof(char));
+    if(temp==NULL){
+        perror("malloc hatası");
+        exit(-1);
+    }
+    for (size_t i = start_pos; i < end_pos; i++){
+        read(fd,temp,1);
+        if(1==is_char(*temp)){
+            free(temp);
+            return 0;
+        }
+    }
+    
+
+    if(0>lseek(fd,0,SEEK_SET)){
+        perror("lseek hatası");
+        exit(-1);
+    }
+    free(temp);
+    return 1;
+}
+
+void unit_test_file_is_empty(){
+    int fd=open("/home/erkan/Desktop/workspace/hw1/output.txt",O_RDWR|O_SYNC,0666);
+    if(fd<0){
+        perror("hata");
+        exit(-1);
+    }
+    
+    if(file_is_empty(fd)){
+        printf("empty");
+    }else{
+        printf("not");
+    }
+
+    close(fd);
+}

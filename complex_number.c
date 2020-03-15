@@ -49,5 +49,11 @@ void unit_test_string_to_complex_number(){
 
 
 int fft(struct complex_number *arr,int size){
+    for (size_t i = 0; i < size; i++)
+    {
+        printf("real part:%d,imajiner part:%d\n",arr[i].real,arr[i].imaginary);
+    }
+    
+
     return 10;
 }
