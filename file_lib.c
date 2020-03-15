@@ -221,6 +221,7 @@ int get_random_line_start(int fd){
     free(temp);
 
     //printf("%s\n",debug);
+    lseek(fd,0,SEEK_SET);
     return pos;
 }
 
@@ -273,10 +274,12 @@ int sizeof_line(int fd,int starting_pos){
         
 
         strcpy(temp2,temp);    
-
+        
         if(i==leng_of_file){/*if file end */
             printf("girdiaaaaaaaaaaaaaaaaaaaa");
-            
+            char * line;    
+            char * clear_line;
+            struct complex_number *arr;
             /*set cursor start of file */     
             if(0>lseek(fd,0,SEEK_SET)){
                 perror("asd");
@@ -293,10 +296,14 @@ int sizeof_line(int fd,int starting_pos){
 
                 *temp2=*temp;
             }while(1);
-            deletenchar(fd,-1,size);
+            line=deletenchar(fd,-1,size);
+            clear_line=clearString(line ,size);//size a bak
+            int result=fft(arr,16);
+            //write result
+            printf("%s",line);
             free(temp);
             free(temp2);
-            return size;
+            return -1;
         }
     }while(i<leng_of_file);
         
