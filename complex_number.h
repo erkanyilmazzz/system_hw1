@@ -22,7 +22,8 @@ void unit_test_string_to_complex_number();
 
 char * getString(struct complex_number,char *sum);
 
-
 void unit_test_getString();
+
+int fft(struct complex_number *arr,int size);
 
 #endif

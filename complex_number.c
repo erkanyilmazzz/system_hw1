@@ -21,18 +21,6 @@ int  string_to_comlpex_number_arr(char * str,struct complex_number ** arr){
         (*arr)[i].imaginary=str[2*i];
         (*arr)[i].real=str[2*i+1];
     }
-    /*
-    (*arr)[0].imaginary=str[0];
-    (*arr)[0].real=str[1];
-    (*arr)[1].imaginary=str[2];
-    (*arr)[1].real=str[3];
-    (*arr)[2].imaginary=str[4];
-    (*arr)[2].real=str[5];
-    (*arr)[3].imaginary=str[6];
-    (*arr)[3].real=str[7];
-
-    */
-    
     return size_of_complex_number_arr;
 }
 char * getString(struct complex_number num,char * snum){
@@ -59,3 +47,7 @@ void unit_test_string_to_complex_number(){
     
 }
 
+
+int fft(struct complex_number *arr,int size){
+    return 10;
+}

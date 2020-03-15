@@ -49,4 +49,6 @@ char * clearString(char * string,int size);
 
 
 struct complex_number * get_complex_number_arr(char *str,int size);
+
+
 #endif

@@ -47,7 +47,7 @@ int get_first_avalible_pos(int fd){
     if(endOfFile<-1)perror("line 31");
     if(0>lseek(fd,0,SEEK_SET))perror("line 32");
 
-    printf("end of file %d",endOfFile);
+   // printf("end of file %d",endOfFile);
     int i=0;  
     int pos=0;
     int interpos=0;
@@ -153,7 +153,7 @@ void unit_test_get_how_many_new_line (){
 
 
 
-int get_random_line_start(int fd){/*sıkıntı var*/
+int get_random_line_start(int fd){
     
     /*I get start of file en d end of dile */
     int end_of_file=lseek(fd,0,SEEK_END);                       
@@ -178,7 +178,7 @@ int get_random_line_start(int fd){/*sıkıntı var*/
         perror("lseek error");
         exit(-1);
     }
-    printf("random :%d ye set edildi\n",random);
+    //printf("random :%d ye set edildi\n",random);
     int pos=0;
     int read_byte=1;
     char *temp=malloc(sizeof(char));    
@@ -220,7 +220,7 @@ int get_random_line_start(int fd){/*sıkıntı var*/
 
     free(temp);
 
-    printf("%s\n",debug);
+    //printf("%s\n",debug);
     return pos;
 }
 
@@ -268,8 +268,8 @@ int sizeof_line(int fd,int starting_pos){
         }
          counter ++;
          ++i;
-         printf("%d ",counter);
-         printf("önceki ---%c--- sonraki ---%c---\n",*temp2,*temp);
+     //    printf("%d ",counter);
+     //    printf("önceki ---%c--- sonraki ---%c---\n",*temp2,*temp);
         
 
         strcpy(temp2,temp);    
@@ -341,8 +341,6 @@ char * deletenchar(int fd,int pos,int size){
     temp[size-1]='\n';
     write(fd,temp,size);
 
-    
-
     return string;
 }
 
@@ -352,15 +350,16 @@ void unit_test_deletenchar(){
         perror("hata");
         exit(-1);
     }
+
     int start =get_random_line_start(fd);
     int size=sizeof_line(fd,start);
-    printf("start :::%d  size::::%d\n ",start,size);
+    //printf("start :::%d  size::::%d\n ",start,size);
     char * temp;
     temp=deletenchar(fd,start,size);
     char * stirng=clearString(temp,size);
-    printf("string is::::%s\n",stirng);
+    //printf("string is::::%s\n",stirng);
     struct complex_number *arr=get_complex_number_arr(stirng,size);
-   
+    printf("%d ",fft(arr,16));
    
     
     close(fd);
@@ -400,7 +399,7 @@ struct complex_number * get_complex_number_arr(char *str,int size){
         arr[0].real=atoi(token);
         token=strtok(NULL,tokens);
         arr[0].imaginary=atoi(token);
-        printf("%d + i%d \n",arr[0].real,arr[0].imaginary);
+    //    printf("%d + i%d \n",arr[0].real,arr[0].imaginary);
 
         int i=1;
         while( i<16 ) {
@@ -409,7 +408,7 @@ struct complex_number * get_complex_number_arr(char *str,int size){
             arr[i].real=atoi(token);
             token = strtok(NULL, tokens);
             arr[i].imaginary=atoi(token);
-//            printf("%d + i%d \n",arr[i].real,arr[i].imaginary);
+        //    printf("%d + i%d \n",arr[i].real,arr[i].imaginary);
             ++i;
         }
 
@@ -417,3 +416,6 @@ struct complex_number * get_complex_number_arr(char *str,int size){
     
     return  arr;
 }
+
+
+
