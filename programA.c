@@ -37,10 +37,6 @@ int main(int argc,char ** argv){
       struct file_lib file1;
       struct file_lib file2;
       char str[BUF];
-      //strcpy(file1.file_path,inputPathA);
-      //strcpy(file2.file_path,outputPathA);
-      //file1.file_path="/home/erkan/Desktop/workspace/hw1/text.txt";
-      //file2.file_path="/home/erkan/Desktop/workspace/hw1/text2.txt";
       
 
       file1.fd=open(inputPathA,O_RDWR|O_SYNC,0666);
@@ -59,6 +55,10 @@ int main(int argc,char ** argv){
 int read_byte=BUF;
 struct complex_number * arr;    
 struct flock _lock;
+struct flock _inputlock;
+
+
+memset (&_inputlock, 0, sizeof(_inputlock));;
 memset (&_lock, 0, sizeof(_lock));;
  
 
@@ -67,8 +67,8 @@ file1.is_lock=0;
 int i=0;
 lseek(file2.fd,0,SEEK_SET);
 do{
-      if(!file1.is_lock){
             //lock
+            //lock(file1.fd,&_inputlock);
             read_byte=read(file1.fd,str,BUF);
             if(read_byte!=BUF)break;                        //handle it 
             str[BUF]='\0';
@@ -83,7 +83,6 @@ do{
             }
 
             char * writeable_text=malloc(sizeof(char)*500);
-            char * temp;
             for (size_t i = 0; i < BUF/2; i++){
                   char temp[10];
                   getString(arr[i],temp);
@@ -103,19 +102,29 @@ do{
                   write_in_a_post(file2.fd,writeable_text,strlen(writeable_text),pos-1);
                   
                   unlock(file2.fd,&_lock);
+                  //unlock(file1.fd,&_inputlock);
                   //printf("curser pos:::::%d pos:::%d",lseek(file2.fd,0,SEEK_CUR),pos);
                   printf("\n");
                   free(writeable_text);
                   sleep(time);
+                  
             //unlock
-      }else{
-            //wait
-      }
+      
+      
 ++i;
 }while(read_byte==BUF);
-    
-close(file1.fd);
-close(file2.fd);
+
+
+
+if(0>close(file1.fd)){
+      perror("cant close");
+      exit(-1);
+}
+if(0>close(file2.fd)){
+      perror("cant close");
+      exit(-1);
+}
+
 free(inputPathA);
 free(outputPathA);
 
